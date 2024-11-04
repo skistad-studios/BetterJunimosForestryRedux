@@ -1,9 +1,9 @@
-﻿namespace BetterJunimosRedux
+﻿namespace BetterJunimosForestryRedux
 {
     using System;
     using System.Collections.Generic;
     using BetterJunimos;
-    using BetterJunimosRedux.Abilities;
+    using BetterJunimosForestryRedux.Abilities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using StardewModdingAPI;
@@ -173,7 +173,7 @@
             }
 
             Utils.SetHutShowHud(hutGuid, !Utils.GetHutShowHud(hutGuid));
-            Utils.GetHutFromGuid(hutGuid).GetParentLocation().playSound("junimoMeep1");
+            Game1.playSound("junimoMeep1");
 
             this.Helper.Input.Suppress(e.Button);
         }
@@ -189,7 +189,7 @@
 
                 this.Helper.Input.Suppress(e.Button);
                 JunimoHut hut = Utils.GetHutFromGuid(hutButton.Guid);
-                hut.GetParentLocation().playSound("junimoMeep1");
+                Game1.playSound("junimoMeep1");
 
                 if (hutButton.IsQuestButton)
                 {
@@ -198,14 +198,6 @@
                 else
                 {
                     Utils.SetHutMode(hutButton.Guid, hutButton.Mode);
-                    if (hutButton.Mode == Mode.Maze)
-                    {
-                        Maze.MakeMazeForHut(hutButton.Guid);
-                    }
-                    else
-                    {
-                        Maze.ClearMazeForHut(hutButton.Guid);
-                    }
                 }
 
                 return true;
@@ -228,7 +220,7 @@
             }
 
             this.iconsTexture = this.Helper.ModContent.Load<Texture2D>("assets/icons.png");
-            this.scrollTexture = this.Helper.ModContent.Load<Texture2D>("assets/scroll2.png");
+            this.scrollTexture = this.Helper.ModContent.Load<Texture2D>("assets/scroll.png");
         }
 
         private void SetupGenericModConfigMenuApi()
@@ -283,6 +275,11 @@
         private void OnSaveLoaded(object sender, EventArgs e)
         {
             Config = this.Helper.ReadConfig<ModConfig>();
+            this.RegisterAbilities();
+        }
+
+        private void RegisterAbilities()
+        {
             BetterJunimosApi.RegisterJunimoAbility(new ChopWildTreesAbility());
             BetterJunimosApi.RegisterJunimoAbility(new CollectDroppedObjectsAbility());
             BetterJunimosApi.RegisterJunimoAbility(new CollectSeedsAbility());
@@ -307,15 +304,7 @@
 
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            foreach (Guid hutGuid in Utils.GetAllHutGuids())
-            {
-                if (Utils.GetHutMode(hutGuid) == Mode.Maze)
-                {
-                    Maze.MakeMazeForHut(hutGuid);
-                }
-            }
-
-            // reset for rainy days, winter, or GMCM options change
+            // Reset for rainy days, winter, or config changes
             this.Helper.GameContent.InvalidateCache(@"Characters\Junimo");
         }
 

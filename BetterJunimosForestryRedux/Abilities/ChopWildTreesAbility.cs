@@ -1,11 +1,10 @@
-﻿namespace BetterJunimosRedux.Abilities
+﻿namespace BetterJunimosForestryRedux.Abilities
 {
     using System;
     using System.Collections.Generic;
     using BetterJunimos.Abilities;
     using Microsoft.Xna.Framework;
     using StardewValley;
-    using StardewValley.Buildings;
     using StardewValley.Characters;
     using StardewValley.TerrainFeatures;
     using StardewValley.Tools;
@@ -33,9 +32,8 @@
         /// <inheritdoc/>
         public bool IsActionAvailable(GameLocation location, Vector2 pos, Guid hutGuid)
         {
-            JunimoHut hut = Utils.GetHutFromGuid(hutGuid);
             Mode mode = Utils.GetHutMode(hutGuid);
-            if (mode == Mode.Normal || mode == Mode.Maze)
+            if (mode == Mode.Normal)
             {
                 return false;
             }
@@ -43,7 +41,7 @@
             bool foundTree = false;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (Utils.GetTileIsInHutRadius(hutGuid, p))
+                if (Utils.GetIsTileInHutRadius(hutGuid, p))
                 {
                     if (!foundTree && location.terrainFeatures.ContainsKey(p) && GetShouldHarvestTree(location.terrainFeatures[p], mode))
                     {
@@ -69,7 +67,7 @@
             int direction = 0;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (Utils.GetTileIsInHutRadius(hutGuid, p))
+                if (Utils.GetIsTileInHutRadius(hutGuid, p))
                 {
                     if (!foundTree && location.terrainFeatures.ContainsKey(p) && GetShouldHarvestTree(location.terrainFeatures[p], mode))
                     {

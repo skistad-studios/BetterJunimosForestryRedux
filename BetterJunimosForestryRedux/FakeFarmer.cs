@@ -1,4 +1,4 @@
-﻿namespace BetterJunimosRedux
+﻿namespace BetterJunimosForestryRedux
 {
     using Microsoft.Xna.Framework;
     using StardewValley;

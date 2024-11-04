@@ -1,4 +1,4 @@
-﻿namespace BetterJunimosRedux.Abilities
+﻿namespace BetterJunimosForestryRedux.Abilities
 {
     using System;
     using System.Collections.Generic;
@@ -15,7 +15,7 @@
     /// </summary>
     public class FertilizeTreesAbility : IJunimoAbility
     {
-        private const string TreeFertilizer = "805";
+        private const string TreeFertilizerId = "805";
 
         /// <inheritdoc/>
         public string AbilityName()
@@ -29,13 +29,7 @@
             bool foundTree = false;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!foundTree &&
-                Utils.GetTileIsInHutRadius(hutGuid, p) &&
-                location.terrainFeatures.ContainsKey(p) &&
-                location.terrainFeatures[p] is Tree tree &&
-                tree.growthStage.Value < 5 &&
-                !location.objects.ContainsKey(p) &&
-                !tree.fertilized.Value)
+                if (!foundTree && Utils.GetIsTileInHutRadius(hutGuid, p) && location.terrainFeatures.ContainsKey(p) && this.GetCanFertilizeTree(location, pos, location.terrainFeatures[p]))
                 {
                     foundTree = true;
                 }
@@ -54,7 +48,7 @@
         public bool PerformAction(GameLocation location, Vector2 pos, JunimoHarvester junimo, Guid hutGuid)
         {
             Chest chest = Utils.GetHutFromGuid(hutGuid).GetOutputChest();
-            Item foundItem = chest.Items.FirstOrDefault(item => item.itemId.Value == TreeFertilizer);
+            Item foundItem = chest.Items.FirstOrDefault(item => item.itemId.Value == TreeFertilizerId);
             if (foundItem == null)
             {
                 return false;
@@ -64,18 +58,11 @@
             int direction = 0;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!fertilizedTree &&
-                Utils.GetTileIsInHutRadius(hutGuid, p) &&
-                location.terrainFeatures.ContainsKey(p) &&
-                location.terrainFeatures[p] is Tree tree &&
-                tree.growthStage.Value < 5 &&
-                !location.objects.ContainsKey(p) &&
-                !tree.fertilized.Value)
+                if (!fertilizedTree && Utils.GetIsTileInHutRadius(hutGuid, p) && location.terrainFeatures.ContainsKey(p) && this.GetCanFertilizeTree(location, pos, location.terrainFeatures[p]))
                 {
-                    tree.fertilize();
                     Utils.RemoveItemFromHut(hutGuid, foundItem);
                     junimo.faceDirection(direction);
-                    fertilizedTree = true;
+                    fertilizedTree = this.FertilizeTree(location.terrainFeatures[p]);
                 }
 
                 direction += 1;
@@ -95,8 +82,46 @@
         {
             return new List<string>()
             {
-                TreeFertilizer,
+                TreeFertilizerId,
             };
+        }
+
+        private bool GetCanFertilizeTree(GameLocation location, Vector2 pos, TerrainFeature terrainFeature)
+        {
+            Tree tree = terrainFeature as Tree;
+            if (tree == null)
+            {
+                return false;
+            }
+
+            if (tree.growthStage.Value >= 5)
+            {
+                return false;
+            }
+
+            if (tree.fertilized.Value)
+            {
+                return false;
+            }
+
+            if (location.objects.ContainsKey(pos))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool FertilizeTree(TerrainFeature terrainFeature)
+        {
+            Tree tree = terrainFeature as Tree;
+            if (tree == null)
+            {
+                return false;
+            }
+
+            tree.fertilize();
+            return true;
         }
     }
 }

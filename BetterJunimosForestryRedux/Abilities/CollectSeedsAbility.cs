@@ -1,9 +1,9 @@
-﻿namespace BetterJunimosRedux.Abilities
+﻿namespace BetterJunimosForestryRedux.Abilities
 {
     using System;
     using System.Collections.Generic;
     using BetterJunimos.Abilities;
-    using BetterJunimosRedux;
+    using BetterJunimosForestryRedux;
     using Microsoft.Xna.Framework;
     using StardewValley;
     using StardewValley.Characters;

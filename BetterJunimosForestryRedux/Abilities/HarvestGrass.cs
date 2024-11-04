@@ -1,4 +1,4 @@
-﻿namespace BetterJunimosRedux.Abilities
+﻿namespace BetterJunimosForestryRedux.Abilities
 {
     using System;
     using System.Collections.Generic;
@@ -13,6 +13,8 @@
     /// </summary>
     public class HarvestGrass : IJunimoAbility
     {
+        private const string HayId = "178";
+
         /// <inheritdoc/>
         public string AbilityName()
         {
@@ -27,7 +29,7 @@
                 return false;
             }
 
-            return Utils.GetTileIsInHutRadius(hutGuid, pos) && location.terrainFeatures.ContainsKey(pos) && location.terrainFeatures[pos] is Grass;
+            return Utils.GetIsTileInHutRadius(hutGuid, pos) && location.terrainFeatures.ContainsKey(pos) && location.terrainFeatures[pos] is Grass;
         }
 
         /// <inheritdoc/>
@@ -44,9 +46,9 @@
                 return false;
             }
 
-            if (Utils.GetTileIsInHutRadius(hutGuid, pos) && location.terrainFeatures.ContainsKey(pos) && location.terrainFeatures[pos] is Grass grass)
+            if (Utils.GetIsTileInHutRadius(hutGuid, pos) && location.terrainFeatures.ContainsKey(pos) && location.terrainFeatures[pos] is Grass grass)
             {
-                return this.TryHarvestGrass(location, pos, grass);
+                return this.TryHarvestGrass(location, pos, hutGuid, grass);
             }
 
             return false;
@@ -64,12 +66,16 @@
             return new List<string>();
         }
 
-        private bool TryHarvestGrass(GameLocation location, Vector2 pos, Grass grass)
+        private bool TryHarvestGrass(GameLocation location, Vector2 pos, Guid hutGuid, Grass grass)
         {
             location.terrainFeatures.Remove(pos);
             if (Game1.random.NextDouble() < 0.5f)
             {
-                GameLocation.StoreHayInAnySilo(1, location);
+                int leftovers = GameLocation.StoreHayInAnySilo(1, location);
+                if (leftovers > 0)
+                {
+                    Utils.AddItemToHut(hutGuid, (StardewValley.Object)ItemRegistry.Create(HayId, leftovers));
+                }
             }
 
             return true;

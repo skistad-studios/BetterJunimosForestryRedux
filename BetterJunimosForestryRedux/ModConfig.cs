@@ -1,4 +1,4 @@
-﻿namespace BetterJunimosRedux
+﻿namespace BetterJunimosForestryRedux
 {
     /// <summary>
     /// The mod's config file.

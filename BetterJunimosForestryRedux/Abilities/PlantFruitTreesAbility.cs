@@ -1,4 +1,4 @@
-﻿namespace BetterJunimosRedux.Abilities
+﻿namespace BetterJunimosForestryRedux.Abilities
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +6,6 @@
     using BetterJunimos.Abilities;
     using Microsoft.Xna.Framework;
     using StardewValley;
-    using StardewValley.Buildings;
     using StardewValley.Characters;
     using StardewValley.Objects;
     using StardewValley.TerrainFeatures;
@@ -51,7 +50,7 @@
             bool foundPos = false;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!foundPos && Utils.GetTileIsInHutRadius(hutGuid, p) && GetShouldPlantFruitTreeHere(hutGuid, location, p))
+                if (!foundPos && Utils.GetIsTileInHutRadius(hutGuid, p) && GetShouldPlantFruitTreeHere(hutGuid, location, p))
                 {
                     foundPos = true;
                 }
@@ -69,8 +68,13 @@
         /// <inheritdoc/>
         public bool PerformAction(GameLocation location, Vector2 pos, JunimoHarvester junimo, Guid hutGuid)
         {
-            JunimoHut hut = Utils.GetHutFromGuid(hutGuid);
-            Chest chest = hut.GetOutputChest();
+            Mode mode = Utils.GetHutMode(hutGuid);
+            if (mode != Mode.Orchard)
+            {
+                return false;
+            }
+
+            Chest chest = Utils.GetHutFromGuid(hutGuid).GetOutputChest();
             var foundItem = chest.Items.FirstOrDefault(item => item != null && Utils.GetAllFruitTrees().Contains(item.ItemId));
             if (foundItem == null)
             {
@@ -81,9 +85,8 @@
             int direction = 0;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!planted && Utils.GetTileIsInHutRadius(hutGuid, p) && GetShouldPlantFruitTreeHere(hutGuid, location, p) && this.Plant(location, p, foundItem))
+                if (!planted && Utils.GetIsTileInHutRadius(hutGuid, p) && GetShouldPlantFruitTreeHere(hutGuid, location, p) && this.Plant(location, p, hutGuid, foundItem))
                 {
-                    Utils.RemoveItemFromHut(hutGuid, foundItem);
                     junimo.faceDirection(direction);
                     planted = true;
                 }
@@ -141,7 +144,7 @@
             return true;
         }
 
-        private bool Plant(GameLocation location, Vector2 pos, Item item)
+        private bool Plant(GameLocation location, Vector2 pos, Guid hutGuid, Item item)
         {
             if (location.terrainFeatures.TryGetValue(pos, out TerrainFeature feature))
             {
@@ -166,6 +169,7 @@
                 location.playSound("dirtyHit");
             }
 
+            Utils.RemoveItemFromHut(hutGuid, item);
             return true;
         }
     }

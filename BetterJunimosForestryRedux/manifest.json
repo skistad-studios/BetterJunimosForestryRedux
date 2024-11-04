@@ -2,11 +2,11 @@
   "Name": "Better Junimos Forestry Redux",
   "Author": "ceruleandeep, Kristian Skistad",
   "Version": "1.0.0",
-  "Description": "Give your junimos a host of new abilities!",
+  "Description": "Give your junimos (from better junimos) a host of new abilities!",
   "UniqueID": "SkistadStudios.BetterJunimosForestryRedux",
-  "EntryDll": "BetterJunimosRedux.dll",
+  "EntryDll": "BetterJunimosForestryRedux.dll",
   "MinimumApiVersion": "3.2.0",
   "UpdateKeys": [
-    "Nexus:12345"
+    "Nexus:29130"
   ]
 }

@@ -1,4 +1,4 @@
-﻿namespace BetterJunimosRedux.Abilities
+﻿namespace BetterJunimosForestryRedux.Abilities
 {
     using System;
     using System.Collections.Generic;
@@ -26,7 +26,7 @@
             Utils.ForEachDirection(pos, (p) =>
             {
                 if (!foundTree &&
-                Utils.GetTileIsInHutRadius(hutGuid, p) &&
+                Utils.GetIsTileInHutRadius(hutGuid, p) &&
                 location.terrainFeatures.ContainsKey(p) &&
                 this.GetIsHarvestableFruitTree(location.terrainFeatures[p]))
                 {
@@ -51,13 +51,12 @@
             Utils.ForEachDirection(pos, (p) =>
             {
                 if (!harvestedFruit &&
-                Utils.GetTileIsInHutRadius(hutGuid, p) &&
+                Utils.GetIsTileInHutRadius(hutGuid, p) &&
                 location.terrainFeatures.ContainsKey(p) &&
                 this.GetIsHarvestableFruitTree(location.terrainFeatures[p]))
                 {
-                    FruitTree tree = location.terrainFeatures[p] as FruitTree;
-
                     junimo.faceDirection(direction);
+                    FruitTree tree = location.terrainFeatures[p] as FruitTree;
                     harvestedFruit = this.HarvestFruitTree(tree, hutGuid);
                 }
 

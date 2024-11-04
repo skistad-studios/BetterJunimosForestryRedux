@@ -1,9 +1,9 @@
-﻿namespace BetterJunimosRedux.Abilities
+﻿namespace BetterJunimosForestryRedux.Abilities
 {
     using System;
     using System.Collections.Generic;
     using BetterJunimos.Abilities;
-    using BetterJunimosRedux;
+    using BetterJunimosForestryRedux;
     using Microsoft.Xna.Framework;
     using StardewValley;
     using StardewValley.Characters;
@@ -25,7 +25,7 @@
             bool foundDebris = false;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!foundDebris && Utils.GetTileIsInHutRadius(hutGuid, p) && this.GetIsDebrisAtTile(location, p))
+                if (!foundDebris && Utils.GetIsTileInHutRadius(hutGuid, p) && this.GetIsDebrisAtTile(location, p))
                 {
                     foundDebris = true;
                 }
@@ -47,7 +47,7 @@
             int direction = 0;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!movedDebris && Utils.GetTileIsInHutRadius(hutGuid, p))
+                if (!movedDebris && Utils.GetIsTileInHutRadius(hutGuid, p))
                 {
                     List<Debris> debris = this.GetDebrisAtTile(location, p);
                     if (debris.Count > 0)

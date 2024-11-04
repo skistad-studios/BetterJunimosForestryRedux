@@ -1,4 +1,4 @@
-﻿namespace BetterJunimosRedux
+﻿namespace BetterJunimosForestryRedux
 {
     using System;
     using System.Collections.Generic;
@@ -17,8 +17,8 @@
     /// </summary>
     public static class Utils
     {
-        private const string HutShowHudId = "SkistadStudios.BetterJunimosRedux.HutShowHud";
-        private const string HutModeId = "SkistadStudios.BetterJunimosRedux.HutState";
+        private const string HutShowHudId = "SkistadStudios.BetterJunimosForestryRedux.HutShowHud";
+        private const string HutModeId = "SkistadStudios.BetterJunimosForestryRedux.HutState";
 
         /// <summary>
         /// Gets a hut from a guid.
@@ -168,7 +168,7 @@
         /// <param name="hutGuid">Guid of the hut.</param>
         /// <param name="tile">The tile to check.</param>
         /// <returns>True if the tile is within the hut's radius, otherwise false.</returns>
-        public static bool GetTileIsInHutRadius(Guid hutGuid, Vector2 tile)
+        public static bool GetIsTileInHutRadius(Guid hutGuid, Vector2 tile)
         {
             JunimoHut hut = GetHutFromGuid(hutGuid);
             int radius = ModEntry.BetterJunimosApi.GetJunimoHutMaxRadius();
@@ -379,7 +379,7 @@
             Vector2 right = new Vector2(pos.X + 1, pos.Y);
             Vector2 down = new Vector2(pos.X, pos.Y - 1);
             Vector2 left = new Vector2(pos.X - 1, pos.Y);
-            Vector2[] positions = new Vector2[] { up, right, down, left };
+            Vector2[] positions = [up, right, down, left];
             foreach (Vector2 position in positions)
             {
                 action?.Invoke(position);

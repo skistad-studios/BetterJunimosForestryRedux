@@ -1,4 +1,4 @@
-﻿namespace BetterJunimosRedux
+﻿namespace BetterJunimosForestryRedux
 {
     /// <summary>
     /// Junimo hut mode.
@@ -8,26 +8,21 @@
         /// <summary>
         /// Defaul behaviour.
         /// </summary>
-        Normal,
+        Normal = 0,
 
         /// <summary>
         /// Grows and harvests crops.
         /// </summary>
-        Crops,
+        Crops = 1,
 
         /// <summary>
         /// Grows and harvests fruit trees.
         /// </summary>
-        Orchard,
+        Orchard = 2,
 
         /// <summary>
         /// Grows and harvests trees.
         /// </summary>
-        Forest,
-
-        /// <summary>
-        /// Creates a new maze each day.
-        /// </summary>
-        Maze,
+        Forest = 3,
     }
 }
