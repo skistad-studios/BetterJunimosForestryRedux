@@ -25,7 +25,7 @@
             bool foundDebris = false;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!foundDebris && Utils.GetIsTileInHutRadius(hutGuid, p) && this.GetIsDebrisAtTile(location, p))
+                if (!foundDebris && Utils.GetIsTileInHutRadius(hutGuid, location, p) && this.GetIsDebrisAtTile(location, p))
                 {
                     foundDebris = true;
                 }
@@ -47,7 +47,7 @@
             int direction = 0;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!movedDebris && Utils.GetIsTileInHutRadius(hutGuid, p))
+                if (!movedDebris && Utils.GetIsTileInHutRadius(hutGuid, location, p))
                 {
                     List<Debris> debris = this.GetDebrisAtTile(location, p);
                     if (debris.Count > 0)

@@ -35,7 +35,7 @@
         public bool IsActionAvailable(GameLocation location, Vector2 pos, Guid hutGuid)
         {
             Mode mode = Utils.GetHutMode(hutGuid);
-            if (mode != Mode.Normal && Utils.GetIsTileInHutRadius(hutGuid, pos) && this.GetShouldHoe(location, pos, hutGuid))
+            if (mode != Mode.Normal && Utils.GetIsTileInHutRadius(hutGuid, location, pos) && this.GetShouldHoe(location, pos, hutGuid))
             {
                 return true;
             }
@@ -53,7 +53,7 @@
         public bool PerformAction(GameLocation location, Vector2 pos, JunimoHarvester junimo, Guid hutGuid)
         {
             Mode mode = Utils.GetHutMode(hutGuid);
-            if (mode != Mode.Normal && Utils.GetIsTileInHutRadius(hutGuid, pos) && this.GetShouldHoe(location, pos, hutGuid))
+            if (mode != Mode.Normal && Utils.GetIsTileInHutRadius(hutGuid, location, pos) && this.GetShouldHoe(location, pos, hutGuid))
             {
                 Utils.UseToolOnTile(this.fakeHoke, this.fakeFarmer, location, pos);
                 return true;

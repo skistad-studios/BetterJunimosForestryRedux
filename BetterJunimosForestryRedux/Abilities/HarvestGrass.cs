@@ -29,7 +29,7 @@
                 return false;
             }
 
-            return Utils.GetIsTileInHutRadius(hutGuid, pos) && location.terrainFeatures.ContainsKey(pos) && location.terrainFeatures[pos] is Grass;
+            return Utils.GetIsTileInHutRadius(hutGuid, location, pos) && location.terrainFeatures.ContainsKey(pos) && location.terrainFeatures[pos] is Grass;
         }
 
         /// <inheritdoc/>
@@ -46,7 +46,7 @@
                 return false;
             }
 
-            if (Utils.GetIsTileInHutRadius(hutGuid, pos) && location.terrainFeatures.ContainsKey(pos) && location.terrainFeatures[pos] is Grass grass)
+            if (Utils.GetIsTileInHutRadius(hutGuid, location, pos) && location.terrainFeatures.ContainsKey(pos) && location.terrainFeatures[pos] is Grass grass)
             {
                 return this.TryHarvestGrass(location, pos, hutGuid, grass);
             }

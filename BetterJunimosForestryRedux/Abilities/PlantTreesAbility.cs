@@ -50,7 +50,7 @@
             bool foundPos = false;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!foundPos && Utils.GetIsTileInHutRadius(hutGuid, p) && GetShouldPlantWildTreeHere(hutGuid, location, p))
+                if (!foundPos && Utils.GetIsTileInHutRadius(hutGuid, location, p) && GetShouldPlantWildTreeHere(hutGuid, location, p))
                 {
                     foundPos = true;
                 }
@@ -85,7 +85,7 @@
             int direction = 0;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!planted && Utils.GetIsTileInHutRadius(hutGuid, p) && GetShouldPlantWildTreeHere(hutGuid, location, p) && this.Plant(location, p, hutGuid, foundItem))
+                if (!planted && Utils.GetIsTileInHutRadius(hutGuid, location, p) && GetShouldPlantWildTreeHere(hutGuid, location, p) && this.Plant(location, p, hutGuid, foundItem))
                 {
                     junimo.faceDirection(direction);
                     planted = true;

@@ -44,7 +44,7 @@
             bool foundDebris = false;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!foundDebris && Utils.GetIsTileInHutRadius(hutGuid, p) && location.objects.ContainsKey(p) && this.GetIsDebris(location.objects[p]))
+                if (!foundDebris && Utils.GetIsTileInHutRadius(hutGuid, location, p) && location.objects.ContainsKey(p) && this.GetIsDebris(location.objects[p]))
                 {
                     foundDebris = true;
                 }
@@ -66,7 +66,7 @@
             int direction = 0;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!harvestedDebris && Utils.GetIsTileInHutRadius(hutGuid, p) && location.objects.ContainsKey(p) && this.GetIsDebris(location.objects[p]))
+                if (!harvestedDebris && Utils.GetIsTileInHutRadius(hutGuid, location, p) && location.objects.ContainsKey(p) && this.GetIsDebris(location.objects[p]))
                 {
                     StardewValley.Object item = location.objects[p];
                     if (this.GetIsStone(item))

@@ -29,7 +29,7 @@
             bool foundTree = false;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!foundTree && Utils.GetIsTileInHutRadius(hutGuid, p) && location.terrainFeatures.ContainsKey(p) && this.GetCanFertilizeTree(location, pos, location.terrainFeatures[p]))
+                if (!foundTree && Utils.GetIsTileInHutRadius(hutGuid, location, p) && location.terrainFeatures.ContainsKey(p) && this.GetCanFertilizeTree(location, pos, location.terrainFeatures[p]))
                 {
                     foundTree = true;
                 }
@@ -58,7 +58,7 @@
             int direction = 0;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!fertilizedTree && Utils.GetIsTileInHutRadius(hutGuid, p) && location.terrainFeatures.ContainsKey(p) && this.GetCanFertilizeTree(location, pos, location.terrainFeatures[p]))
+                if (!fertilizedTree && Utils.GetIsTileInHutRadius(hutGuid, location, p) && location.terrainFeatures.ContainsKey(p) && this.GetCanFertilizeTree(location, pos, location.terrainFeatures[p]))
                 {
                     Utils.RemoveItemFromHut(hutGuid, foundItem);
                     junimo.faceDirection(direction);

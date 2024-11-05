@@ -166,10 +166,16 @@
         /// Gets if a given tile is within the radius of a hut.
         /// </summary>
         /// <param name="hutGuid">Guid of the hut.</param>
+        /// <param name="location">Location to check.</param>
         /// <param name="tile">The tile to check.</param>
         /// <returns>True if the tile is within the hut's radius, otherwise false.</returns>
-        public static bool GetIsTileInHutRadius(Guid hutGuid, Vector2 tile)
+        public static bool GetIsTileInHutRadius(Guid hutGuid, GameLocation location, Vector2 tile)
         {
+            if (location.IsGreenhouse)
+            {
+                return true;
+            }
+
             JunimoHut hut = GetHutFromGuid(hutGuid);
             int radius = ModEntry.BetterJunimosApi.GetJunimoHutMaxRadius();
             int x = (int)tile.X;

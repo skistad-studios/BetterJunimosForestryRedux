@@ -41,7 +41,7 @@
             bool foundTree = false;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (Utils.GetIsTileInHutRadius(hutGuid, p))
+                if (Utils.GetIsTileInHutRadius(hutGuid, location, p))
                 {
                     if (!foundTree && location.terrainFeatures.ContainsKey(p) && GetShouldHarvestTree(location.terrainFeatures[p], mode))
                     {
@@ -67,7 +67,7 @@
             int direction = 0;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (Utils.GetIsTileInHutRadius(hutGuid, p))
+                if (Utils.GetIsTileInHutRadius(hutGuid, location, p))
                 {
                     if (!foundTree && location.terrainFeatures.ContainsKey(p) && GetShouldHarvestTree(location.terrainFeatures[p], mode))
                     {

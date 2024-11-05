@@ -26,7 +26,7 @@
             Utils.ForEachDirection(pos, (p) =>
             {
                 if (!foundTree &&
-                Utils.GetIsTileInHutRadius(hutGuid, p) &&
+                Utils.GetIsTileInHutRadius(hutGuid, location, p) &&
                 location.terrainFeatures.ContainsKey(p) &&
                 this.GetIsHarvestableFruitTree(location.terrainFeatures[p]))
                 {
@@ -51,7 +51,7 @@
             Utils.ForEachDirection(pos, (p) =>
             {
                 if (!harvestedFruit &&
-                Utils.GetIsTileInHutRadius(hutGuid, p) &&
+                Utils.GetIsTileInHutRadius(hutGuid, location, p) &&
                 location.terrainFeatures.ContainsKey(p) &&
                 this.GetIsHarvestableFruitTree(location.terrainFeatures[p]))
                 {

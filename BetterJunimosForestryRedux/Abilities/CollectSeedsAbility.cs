@@ -51,7 +51,7 @@
                 return false;
             }
 
-            return location.terrainFeatures.ContainsKey(pos) && this.GetIsHarvestableSeed(location.terrainFeatures[pos], mode);
+            return Utils.GetIsTileInHutRadius(hutGuid, location, pos) && location.terrainFeatures.ContainsKey(pos) && this.GetIsHarvestableSeed(location.terrainFeatures[pos], mode);
         }
 
         /// <inheritdoc/>
@@ -74,7 +74,7 @@
                 return false;
             }
 
-            if (!location.terrainFeatures.ContainsKey(pos) || !this.GetIsHarvestableSeed(location.terrainFeatures[pos], mode))
+            if (!Utils.GetIsTileInHutRadius(hutGuid, location, pos) || !location.terrainFeatures.ContainsKey(pos) || !this.GetIsHarvestableSeed(location.terrainFeatures[pos], mode))
             {
                 return false;
             }
