@@ -17,7 +17,16 @@
     /// </summary>
     public class HoeDirtAbility : IJunimoAbility
     {
-        private Hoe fakeHoke = new Hoe()
+        private const string MixedSeedsId = "770";
+        private const string MixedFlowerSeedsId = "MixedFlowerSeeds";
+
+        private Hoe fakeHoe = new Hoe()
+        {
+            UpgradeLevel = 1,
+            IsEfficient = true,
+        };
+
+        private Pickaxe fakePickaxe = new Pickaxe()
         {
             UpgradeLevel = 1,
             IsEfficient = true,
@@ -34,8 +43,7 @@
         /// <inheritdoc/>
         public bool IsActionAvailable(GameLocation location, Vector2 pos, Guid hutGuid)
         {
-            Mode mode = Utils.GetHutMode(hutGuid);
-            if (mode != Mode.Normal && Utils.GetIsTileInHutRadius(hutGuid, location, pos) && this.GetShouldHoe(location, pos, hutGuid))
+            if (Utils.GetIsTileInHutRadius(hutGuid, location, pos) && this.GetToolToUse(location, pos, hutGuid) != null)
             {
                 return true;
             }
@@ -52,11 +60,14 @@
         /// <inheritdoc/>
         public bool PerformAction(GameLocation location, Vector2 pos, JunimoHarvester junimo, Guid hutGuid)
         {
-            Mode mode = Utils.GetHutMode(hutGuid);
-            if (mode != Mode.Normal && Utils.GetIsTileInHutRadius(hutGuid, location, pos) && this.GetShouldHoe(location, pos, hutGuid))
+            if (Utils.GetIsTileInHutRadius(hutGuid, location, pos))
             {
-                Utils.UseToolOnTile(this.fakeHoke, this.fakeFarmer, location, pos);
-                return true;
+                Tool tool = this.GetToolToUse(location, pos, hutGuid);
+                if (tool != null)
+                {
+                    Utils.UseToolOnTile(tool, this.fakeFarmer, location, pos);
+                    return true;
+                }
             }
 
             return false;
@@ -74,27 +85,36 @@
             return new List<string>();
         }
 
-        private bool GetShouldHoe(GameLocation location, Vector2 pos, Guid hutGuid)
+        private Tool GetToolToUse(GameLocation location, Vector2 pos, Guid hutGuid)
         {
             if (!Utils.GetCanBeHoed(location, pos))
             {
-                return false;
-            }
-
-            if (Utils.GetIsHoed(location, pos))
-            {
-                return false;
+                return null;
             }
 
             Mode mode = Utils.GetHutMode(hutGuid);
-            if (mode == Mode.Orchard && PlantFruitTreesAbility.GetShouldPlantFruitTreeHere(hutGuid, location, pos))
+            if (mode == Mode.Orchard && Utils.GetIsTileInFruitTreePattern(pos))
             {
-                return false;
+                if (Utils.GetIsHoed(location, pos))
+                {
+                    return this.fakePickaxe;
+                }
+                else
+                {
+                    return null;
+                }
             }
 
-            if (mode == Mode.Forest && PlantTreesAbility.GetShouldPlantWildTreeHere(hutGuid, location, pos))
+            if (mode == Mode.Forest && Utils.GetIsTileInWildTreePattern(pos))
             {
-                return false;
+                if (Utils.GetIsHoed(location, pos))
+                {
+                    return this.fakePickaxe;
+                }
+                else
+                {
+                    return null;
+                }
             }
 
             for (int x = -1; x < 2; x += 1)
@@ -104,42 +124,72 @@
                     var tile = new Vector2(pos.X + x, pos.Y + y);
                     if (location.terrainFeatures.ContainsKey(tile) && Utils.GetIsFruitTreeSapling(location.terrainFeatures[tile]))
                     {
-                        return false;
+                        if (Utils.GetIsHoed(location, pos))
+                        {
+                            return this.fakePickaxe;
+                        }
+                        else
+                        {
+                            return null;
+                        }
                     }
                 }
             }
 
-            /*
-            REMOVED UNTIL BETTER JUNIMOS IS FIXED
             if (mode == Mode.Forest)
             {
-                return true;
-            }
-            */
-
-            if (!this.GetIsSeedAvailableForTile(location, pos, hutGuid))
-            {
-                return false;
-            }
-
-            if (mode != Mode.Orchard)
-            {
-                return true;
-            }
-
-            for (int x = -1; x < 2; x += 1)
-            {
-                for (int y = -1; y < 2; y += 1)
+                if (!Utils.GetIsHoed(location, pos))
                 {
-                    Vector2 tile = new Vector2(pos.X + x, pos.Y + y);
-                    if (location.terrainFeatures.ContainsKey(tile) && Utils.GetIsMatureFruitTree(location.terrainFeatures[tile]))
+                    return this.fakeHoe;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            if (mode == Mode.Orchard)
+            {
+                for (int x = -1; x < 2; x += 1)
+                {
+                    for (int y = -1; y < 2; y += 1)
                     {
-                        return true;
+                        Vector2 tile = new Vector2(pos.X + x, pos.Y + y);
+                        if (location.terrainFeatures.ContainsKey(tile) && Utils.GetIsMatureFruitTree(location.terrainFeatures[tile]))
+                        {
+                            if (!Utils.GetIsHoed(location, pos))
+                            {
+                                return this.fakeHoe;
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        }
                     }
                 }
             }
 
-            return false;
+            if (mode != Mode.Normal && this.GetIsSeedAvailableForTile(location, pos, hutGuid))
+            {
+                if (!Utils.GetIsHoed(location, pos))
+                {
+                    return this.fakeHoe;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            if (Utils.GetIsHoed(location, pos))
+            {
+                return ModEntry.Config.CleanUnneededHoedDirt ? this.fakePickaxe : null;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private bool GetIsSeedAvailableForTile(GameLocation location, Vector2 pos, Guid hutGuid)
@@ -158,7 +208,14 @@
 
         private bool GetHasPlantableSeed(GameLocation location, Chest chest, string cropType = null)
         {
-            List<Item> foundItems = chest.Items.ToList().FindAll(item => item.Category == StardewValley.Object.SeedsCategory && !Utils.GetAllWildTreeSeeds().Contains(item.ItemId));
+            List<Item> foundItems = chest.Items
+                .ToList()
+                .FindAll(
+                item => item.Category == StardewValley.Object.SeedsCategory &&
+                !Utils.GetAllWildTreeSeeds().Contains(item.ItemId) &&
+                item.itemId.Value != MixedSeedsId &&
+                item.itemId.Value != MixedFlowerSeedsId);
+
             if (cropType == CropTypes.Trellis)
             {
                 foundItems = foundItems.FindAll(item => this.GetIsTrellisCrop(item));
