@@ -22,16 +22,12 @@
         /// <inheritdoc/>
         public bool IsActionAvailable(GameLocation location, Vector2 pos, Guid hutGuid)
         {
-            bool foundDebris = false;
-            Utils.ForEachDirection(pos, (p) =>
+            if (Utils.GetIsTileInHutRadius(hutGuid, location, pos) && this.GetDebrisAtTile(location, pos).Count > 0)
             {
-                if (!foundDebris && Utils.GetIsTileInHutRadius(hutGuid, location, p) && this.GetIsDebrisAtTile(location, p))
-                {
-                    foundDebris = true;
-                }
-            });
+                return true;
+            }
 
-            return foundDebris;
+            return false;
         }
 
         /// <inheritdoc/>
@@ -43,24 +39,16 @@
         /// <inheritdoc/>
         public bool PerformAction(GameLocation location, Vector2 pos, JunimoHarvester junimo, Guid hutGuid)
         {
-            bool movedDebris = false;
-            int direction = 0;
-            Utils.ForEachDirection(pos, (p) =>
+            if (Utils.GetIsTileInHutRadius(hutGuid, location, pos))
             {
-                if (!movedDebris && Utils.GetIsTileInHutRadius(hutGuid, location, p))
+                List<Debris> debris = this.GetDebrisAtTile(location, pos);
+                if (debris.Count > 0)
                 {
-                    List<Debris> debris = this.GetDebrisAtTile(location, p);
-                    if (debris.Count > 0)
-                    {
-                        junimo.faceDirection(direction);
-                        movedDebris = this.MoveDebrisToHut(hutGuid, location, debris);
-                    }
+                    return this.MoveDebrisToHut(hutGuid, location, debris);
                 }
+            }
 
-                direction += 1;
-            });
-
-            return movedDebris;
+            return false;
         }
 
         /// <inheritdoc/>
@@ -73,11 +61,6 @@
         public List<string> RequiredItems()
         {
             return new List<string>();
-        }
-
-        private bool GetIsDebrisAtTile(GameLocation location, Vector2 tile)
-        {
-            return this.GetDebrisAtTile(location, tile).Count > 0;
         }
 
         private List<Debris> GetDebrisAtTile(GameLocation location, Vector2 tile)
