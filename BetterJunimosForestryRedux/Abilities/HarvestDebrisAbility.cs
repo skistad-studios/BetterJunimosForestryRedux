@@ -27,11 +27,6 @@
             IsEfficient = true,
         };
 
-        private MeleeWeapon fakeScythe = new MeleeWeapon("47")
-        {
-            IsEfficient = true,
-        };
-
         /// <inheritdoc/>
         public string AbilityName()
         {
@@ -79,8 +74,7 @@
                     }
                     else if (this.GetIsWeed(item))
                     {
-                        Utils.UseToolOnTile(this.fakeScythe, this.fakeFarmer, location, p);
-                        item.performToolAction(this.fakeAxe);
+                        Utils.UseToolOnTile(this.fakeAxe, this.fakeFarmer, location, p);
                         location.removeObject(p, false);
                     }
 
