@@ -53,13 +53,18 @@
         public FruitTreePatternType FruitTreePattern { get; set; } = FruitTreePatternType.Rows;
 
         /// <summary>
-        /// Gets or sets a value indicating whether junimos will wait until they have a seed for wild tree harvesting.
-        /// </summary>
-        public bool SustainableWildTreeHarvesting { get; set; } = true;
-
-        /// <summary>
         /// Gets or sets a value indicating whether junimos will harvest grass.
         /// </summary>
         public bool HarvestGrassEnabled { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether junimos will get rid of unneeded hoed dirt.
+        /// </summary>
+        public bool CleanUnneededHoedDirt { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether junimos will wait until they have a seed for wild tree harvesting.
+        /// </summary>
+        public bool SustainableWildTreeHarvesting { get; set; } = false;
     }
 }

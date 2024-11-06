@@ -15,23 +15,6 @@
     /// </summary>
     public class PlantFruitTreesAbility : IJunimoAbility
     {
-        /// <summary>
-        /// Get if a fruit tree should be planted on the given tile.
-        /// </summary>
-        /// <param name="hutGuid">Guid of the hut planting trees.</param>
-        /// <param name="location">Location of the tile.</param>
-        /// <param name="pos">Position of the tile.</param>
-        /// <returns>True if a fruit tree should be planted at the tile, otherwise false.</returns>
-        public static bool GetShouldPlantFruitTreeHere(Guid hutGuid, GameLocation location, Vector2 pos)
-        {
-            if (Utils.GetIsTileInFrontOfDoor(hutGuid, pos))
-            {
-                return false;
-            }
-
-            return Utils.GetIsTileInFruitTreePattern(pos) && GetIsPlantable(location, pos);
-        }
-
         /// <inheritdoc/>
         public string AbilityName()
         {
@@ -50,7 +33,7 @@
             bool foundPos = false;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!foundPos && Utils.GetIsTileInHutRadius(hutGuid, location, p) && GetShouldPlantFruitTreeHere(hutGuid, location, p))
+                if (!foundPos && Utils.GetIsTileInHutRadius(hutGuid, location, p) && this.GetShouldPlantFruitTreeHere(hutGuid, location, p))
                 {
                     foundPos = true;
                 }
@@ -85,7 +68,7 @@
             int direction = 0;
             Utils.ForEachDirection(pos, (p) =>
             {
-                if (!planted && Utils.GetIsTileInHutRadius(hutGuid, location, p) && GetShouldPlantFruitTreeHere(hutGuid, location, p) && this.Plant(location, p, hutGuid, foundItem))
+                if (!planted && Utils.GetIsTileInHutRadius(hutGuid, location, p) && this.GetShouldPlantFruitTreeHere(hutGuid, location, p) && this.Plant(location, p, hutGuid, foundItem))
                 {
                     junimo.faceDirection(direction);
                     planted = true;
@@ -109,9 +92,24 @@
             return Utils.GetAllFruitTrees();
         }
 
-        private static bool GetIsPlantable(GameLocation location, Vector2 pos)
+        private bool GetShouldPlantFruitTreeHere(Guid hutGuid, GameLocation location, Vector2 pos)
         {
-            if (location.IsTileOccupiedBy(pos) && !Utils.GetIsHoed(location, pos))
+            if (Utils.GetIsTileInFrontOfDoor(hutGuid, pos))
+            {
+                return false;
+            }
+
+            return Utils.GetIsTileInFruitTreePattern(pos) && this.GetIsPlantable(location, pos);
+        }
+
+        private bool GetIsPlantable(GameLocation location, Vector2 pos)
+        {
+            if (location.IsTileOccupiedBy(pos))
+            {
+                return false;
+            }
+
+            if (Utils.GetIsHoed(location, pos))
             {
                 return false;
             }
@@ -146,15 +144,6 @@
 
         private bool Plant(GameLocation location, Vector2 pos, Guid hutGuid, Item item)
         {
-            if (location.terrainFeatures.TryGetValue(pos, out TerrainFeature feature))
-            {
-                HoeDirt hoeDirt = feature as HoeDirt;
-                if (hoeDirt != null && hoeDirt.crop == null)
-                {
-                    location.terrainFeatures.Remove(pos);
-                }
-            }
-
             if (location.terrainFeatures.Keys.Contains(pos))
             {
                 return false;

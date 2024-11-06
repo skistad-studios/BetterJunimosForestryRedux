@@ -232,19 +232,6 @@
 
             GenericModConfigMenuApi.Register(this.ModManifest, () => Config = new ModConfig(), () => this.Helper.WriteConfig(Config));
 
-            GenericModConfigMenuApi.AddBoolOption(
-                this.ModManifest,
-                () => Config.HarvestGrassEnabled,
-                (val) => Config.HarvestGrassEnabled = val,
-                () => "Harvest Grass");
-
-            GenericModConfigMenuApi.AddBoolOption(
-                this.ModManifest,
-                () => Config.SustainableWildTreeHarvesting,
-                (val) => Config.SustainableWildTreeHarvesting = val,
-                () => "Sustainable tree harvesting",
-                () => "Only harvest wild trees when they've grown a seed");
-
             GenericModConfigMenuApi.AddTextOption(
                 this.ModManifest,
                 () => Config.WildTreePattern.ToString(),
@@ -255,7 +242,7 @@
                         Config.WildTreePattern = parsedEnum;
                     }
                 },
-                () => "Wild tree pattern",
+                () => "Wild Tree Pattern",
                 allowedValues: Enum.GetNames<ModConfig.WildTreePatternType>());
 
             GenericModConfigMenuApi.AddTextOption(
@@ -268,8 +255,28 @@
                         Config.FruitTreePattern = parsedEnum;
                     }
                 },
-                () => "Fruit tree pattern",
+                () => "Fruit Tree Pattern",
                 allowedValues: Enum.GetNames<ModConfig.FruitTreePatternType>());
+
+            GenericModConfigMenuApi.AddBoolOption(
+                this.ModManifest,
+                () => Config.HarvestGrassEnabled,
+                (val) => Config.HarvestGrassEnabled = val,
+                () => "Harvest Grass");
+
+            GenericModConfigMenuApi.AddBoolOption(
+                this.ModManifest,
+                () => Config.CleanUnneededHoedDirt,
+                (val) => Config.CleanUnneededHoedDirt = val,
+                () => "Clear Unneeded Hoed Dirt",
+                () => "Get rid of any unneeded hoed dirt for the current mode.");
+
+            GenericModConfigMenuApi.AddBoolOption(
+                this.ModManifest,
+                () => Config.SustainableWildTreeHarvesting,
+                (val) => Config.SustainableWildTreeHarvesting = val,
+                () => "Sustainable tree harvesting",
+                () => "Only harvest wild trees when they've grown a seed");
         }
 
         private void OnSaveLoaded(object sender, EventArgs e)
@@ -285,7 +292,7 @@
             BetterJunimosApi.RegisterJunimoAbility(new CollectSeedsAbility());
             BetterJunimosApi.RegisterJunimoAbility(new PlantTreesAbility());
             BetterJunimosApi.RegisterJunimoAbility(new HarvestDebrisAbility());
-            BetterJunimosApi.RegisterJunimoAbility(new HarvestGrass());
+            BetterJunimosApi.RegisterJunimoAbility(new HarvestGrassAbility());
             BetterJunimosApi.RegisterJunimoAbility(new FertilizeTreesAbility());
             BetterJunimosApi.RegisterJunimoAbility(new HarvestFruitTreesAbility());
             BetterJunimosApi.RegisterJunimoAbility(new PlantFruitTreesAbility());

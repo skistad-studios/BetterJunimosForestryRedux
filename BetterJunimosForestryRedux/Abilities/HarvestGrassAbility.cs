@@ -11,7 +11,7 @@
     /// <summary>
     /// Allows junimos to harvest grass.
     /// </summary>
-    public class HarvestGrass : IJunimoAbility
+    public class HarvestGrassAbility : IJunimoAbility
     {
         private const string HayId = "178";
 
