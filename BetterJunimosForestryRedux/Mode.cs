@@ -16,13 +16,13 @@
         Crops = 1,
 
         /// <summary>
-        /// Grows and harvests fruit trees.
-        /// </summary>
-        Orchard = 2,
-
-        /// <summary>
         /// Grows and harvests trees.
         /// </summary>
-        Forest = 3,
+        Forest = 2,
+
+        /// <summary>
+        /// Grows and harvests fruit trees.
+        /// </summary>
+        Orchard = 3,
     }
 }

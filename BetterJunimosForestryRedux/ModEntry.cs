@@ -27,7 +27,6 @@
         private readonly Rectangle cropModeIconRect = new Rectangle(16, 0, 16, 16);
         private readonly Rectangle orchardModeIconRect = new Rectangle(32, 0, 16, 16);
         private readonly Rectangle forestModeIconRect = new Rectangle(48, 0, 16, 16);
-        private readonly Rectangle mazeModeIconRect = new Rectangle(64, 0, 16, 16);
         private readonly Rectangle questsIconRect = new Rectangle(112, 0, 16, 16);
 
         private Dictionary<Rectangle, HutButton> hutButtons = new Dictionary<Rectangle, HutButton>();
@@ -102,8 +101,8 @@
 
             Rectangle normalRect = new Rectangle(scrollViewportX + ScrollPaddingX, offsetY, IconSize, IconSize);
             Rectangle cropsRect = new Rectangle(scrollViewportX + ScrollPaddingX + IconOffset, offsetY, IconSize, IconSize);
-            Rectangle orchardRect = new Rectangle(scrollViewportX + ScrollPaddingX + (IconOffset * 2), offsetY, IconSize, IconSize);
-            Rectangle forestRect = new Rectangle(scrollViewportX + ScrollPaddingX + (IconOffset * 3), offsetY, IconSize, IconSize);
+            Rectangle forestRect = new Rectangle(scrollViewportX + ScrollPaddingX + (IconOffset * 2), offsetY, IconSize, IconSize);
+            Rectangle orchardRect = new Rectangle(scrollViewportX + ScrollPaddingX + (IconOffset * 3), offsetY, IconSize, IconSize);
             Rectangle questsRect = new Rectangle(scrollViewportX + ScrollPaddingX + (IconOffset * 4), offsetY, IconSize, IconSize);
 
             this.hutButtons[normalRect] = new HutButton(hutGuid, Mode.Normal);
