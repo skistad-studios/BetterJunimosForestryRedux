@@ -1,12 +1,18 @@
 ﻿{
-  "Name": "Better Junimos Forestry Redux",
-  "Author": "ceruleandeep, Kristian Skistad",
-  "Version": "1.0.0",
-  "Description": "Give your junimos (from better junimos) a host of new abilities!",
-  "UniqueID": "SkistadStudios.BetterJunimosForestryRedux",
-  "EntryDll": "BetterJunimosForestryRedux.dll",
-  "MinimumApiVersion": "3.2.0",
-  "UpdateKeys": [
-    "Nexus:29130"
-  ]
+    "Name": "Better Junimos Forestry Redux",
+    "Author": "ceruleandeep, Kristian Skistad",
+    "Version": "1.0.1-unofficial.2-MaximillianRW",
+    "Description": "Give your junimos (from better junimos) a host of new abilities!",
+    "UniqueID": "SkistadStudios.BetterJunimosForestryRedux",
+    "EntryDll": "BetterJunimosForestryRedux.dll",
+    "MinimumApiVersion": "4.1.0",
+    "UpdateKeys": [
+        "Nexus:29130"
+    ],
+    "Dependencies": [
+        {
+            "UniqueID": "hawkfalcon.BetterJunimos",
+            "IsRequired": true
+        }
+    ]
 }
