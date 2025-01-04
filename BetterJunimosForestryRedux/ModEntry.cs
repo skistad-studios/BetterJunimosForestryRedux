@@ -79,8 +79,6 @@
 
         private void RenderHutMenu(RenderedWorldEventArgs e, Guid hutGuid)
         {
-            Mode mode = Utils.GetHutMode(hutGuid);
-
             if (!Utils.GetHutShowHud(hutGuid))
             {
                 return;
@@ -88,6 +86,11 @@
 
             JunimoHut hut = Utils.GetHutFromGuid(hutGuid);
             if (hut == null)
+            {
+                return;
+            }
+
+            if (Game1.currentLocation != hut.GetParentLocation())
             {
                 return;
             }
@@ -111,6 +114,7 @@
             this.hutButtons[forestRect] = new HutButton(hutGuid, Mode.Forest);
             this.hutButtons[questsRect] = new HutButton(hutGuid);
 
+            Mode mode = Utils.GetHutMode(hutGuid);
             this.DrawScroll(e.SpriteBatch, new Vector2(scrollViewportX, scrollViewportY));
             e.SpriteBatch.Draw(this.iconsTexture, normalRect, this.normalModeIconRect, Color.White * (mode == Mode.Normal ? 1.0f : 0.25f));
             e.SpriteBatch.Draw(this.iconsTexture, cropsRect, this.cropModeIconRect, Color.White * (mode == Mode.Crops ? 1.0f : 0.25f));
@@ -159,6 +163,11 @@
             foreach (Guid guid in Utils.GetAllHutGuids())
             {
                 JunimoHut hut = Utils.GetHutFromGuid(guid);
+                if (Game1.currentLocation != hut.GetParentLocation())
+                {
+                    continue;
+                }
+
                 if (hut.occupiesTile(e.Cursor.Tile))
                 {
                     hutGuid = guid;
